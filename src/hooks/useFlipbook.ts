@@ -17,7 +17,7 @@ const useFlipbook = (totalPages: number, secondsPerPage: number): UseFlipbookRet
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+const intervalRef = useRef<number | null>(null);
 
   // Clear interval helper
   const clearAutoPlay = useCallback(() => {

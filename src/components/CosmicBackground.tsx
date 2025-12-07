@@ -355,7 +355,7 @@ const CosmicBackground: React.FC = () => {
     };
 
     // Draw and update floating particles
-    const drawParticles = (time: number) => {
+    const drawParticles = () => {
       particlesRef.current.forEach((particle) => {
         // Update position
         particle.x += particle.speedX;
@@ -409,7 +409,7 @@ const CosmicBackground: React.FC = () => {
 
     // Draw aurora effect at top
     const drawAurora = (time: number) => {
-      const { width, height } = canvas;
+      const { width } = canvas;
 
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
@@ -479,7 +479,7 @@ const CosmicBackground: React.FC = () => {
       starsRef.current.forEach((star) => drawStar(star, time));
 
       // Draw floating particles
-      drawParticles(time);
+      drawParticles();
 
       // Update and draw shooting stars
       updateShootingStars();

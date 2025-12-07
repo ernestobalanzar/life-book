@@ -11,14 +11,13 @@ export const CONFIG: Config = {
   // Welcome screen messages
   welcomeMessage: {
   title: "Happy Birthday, Valentina!",
-  subtitle: "A book of 92 chapters",
+  subtitle: "A universe of chapters",
   dedication: "Your life has so many stories to tell, so many chapters I will never know. But this one, the one I got to live with you, I call it The Galactic Chapter.",
 },
 
-  // End screen messages
-  endMessage: {
+endMessage: {
   title: "The Galactic Chapter Continues...",
-  subtitle: "Happy 92nd Birthday, Valentina 🎂",
+  subtitle: "Happy Birthday, Valentina 🎂",
   replayButton: "Relive the journey",
 },
 
