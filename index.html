@@ -2,6 +2,11 @@
 <html lang="en">
   
   <head>
+    <!-- Google Fonts - Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
       * {
         margin: 0;
@@ -13,14 +18,28 @@
       body,
       #root {
         width: 100%;
-        height: 100%;
-        overflow: hidden;
+        min-height: 100%;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      /* Keyframe for skeleton loading */
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
       }
     </style>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>life-book</title>
+    <title>Valentina's Magic Flowers</title>
+    <meta name="description" content="Every human is a cosmic flower. Explore the mystical art and journey of Valentina.">
   </head>
   <body>
     <div id="root"></div>

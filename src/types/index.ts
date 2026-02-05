@@ -24,3 +24,6 @@ export interface Config {
   endMessage: EndMessage;
   musicPath: string;
 }
+
+// Re-export website types
+export * from './website';
