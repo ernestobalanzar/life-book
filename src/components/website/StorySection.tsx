@@ -1,12 +1,27 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { STORY_CONTENT, HUMAN_STORY_TIMELINE } from '../../config/website';
 import { websiteTheme } from '../../config/styles';
 import type { TimelineEvent } from '../../types/website';
 import EnergyWaves from './EnergyWaves';
 
+// Hook to detect mobile view
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [breakpoint]);
+
+  return isMobile;
+};
+
 const StorySection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -103,18 +118,19 @@ const StorySection: React.FC = () => {
         {/* Timeline */}
         <div style={{
           position: 'relative',
-          maxWidth: '900px',
+          maxWidth: isMobile ? '100%' : '900px',
           margin: '0 auto',
+          paddingLeft: isMobile ? '40px' : '0',
         }}>
-          {/* Central Line */}
+          {/* Central Line - moves to left on mobile */}
           <div style={{
             position: 'absolute',
-            left: '50%',
+            left: isMobile ? '15px' : '50%',
             top: 0,
             bottom: 0,
             width: '2px',
             background: `linear-gradient(to bottom, transparent, ${websiteTheme.colors.accent.rose}, transparent)`,
-            transform: 'translateX(-50%)',
+            transform: isMobile ? 'none' : 'translateX(-50%)',
           }} />
 
           {HUMAN_STORY_TIMELINE.map((event, index) => (
@@ -123,6 +139,7 @@ const StorySection: React.FC = () => {
               event={event}
               index={index}
               isLeft={index % 2 === 0}
+              isMobile={isMobile}
             />
           ))}
         </div>
@@ -135,21 +152,25 @@ interface TimelineItemProps {
   event: TimelineEvent;
   index: number;
   isLeft: boolean;
+  isMobile: boolean;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => {
+const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft, isMobile }) => {
+  // On mobile, all cards go to the right of the timeline
+  const effectiveIsLeft = isMobile ? false : isLeft;
+
   return (
     <motion.div
-      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+      initial={{ opacity: 0, x: isMobile ? 30 : (isLeft ? -50 : 50) }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       style={{
         display: 'flex',
-        justifyContent: isLeft ? 'flex-end' : 'flex-start',
-        paddingRight: isLeft ? 'calc(50% + 30px)' : '0',
-        paddingLeft: isLeft ? '0' : 'calc(50% + 30px)',
-        marginBottom: '3rem',
+        justifyContent: effectiveIsLeft ? 'flex-end' : 'flex-start',
+        paddingRight: effectiveIsLeft ? 'calc(50% + 30px)' : '0',
+        paddingLeft: isMobile ? '30px' : (effectiveIsLeft ? '0' : 'calc(50% + 30px)'),
+        marginBottom: isMobile ? '2rem' : '3rem',
         position: 'relative',
       }}
     >
@@ -158,17 +179,17 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => 
         whileHover={{ scale: 1.2, rotate: 15 }}
         style={{
           position: 'absolute',
-          left: '50%',
+          left: isMobile ? '-25px' : '50%',
           top: '20px',
-          transform: 'translateX(-50%)',
-          width: '56px',
-          height: '56px',
+          transform: isMobile ? 'none' : 'translateX(-50%)',
+          width: isMobile ? '40px' : '56px',
+          height: isMobile ? '40px' : '56px',
           borderRadius: '50%',
           background: websiteTheme.gradients.accent,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '1.5rem',
+          fontSize: isMobile ? '1.1rem' : '1.5rem',
           boxShadow: '0 4px 20px rgba(196, 147, 147, 0.4), inset 0 2px 4px rgba(255,255,255,0.3)',
           zIndex: 1,
           border: '3px solid rgba(255, 255, 255, 0.5)',
@@ -188,10 +209,11 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => 
           background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 245, 0.95))',
           backdropFilter: 'blur(12px)',
           border: '1px solid rgba(212, 165, 165, 0.25)',
-          borderRadius: '20px',
-          padding: '2rem 2.5rem',
-          maxWidth: '380px',
-          textAlign: isLeft ? 'right' : 'left',
+          borderRadius: isMobile ? '16px' : '20px',
+          padding: isMobile ? '1.25rem 1.5rem' : '2rem 2.5rem',
+          maxWidth: isMobile ? '100%' : '380px',
+          width: isMobile ? '100%' : 'auto',
+          textAlign: 'left',
           boxShadow: '0 15px 50px rgba(100, 60, 60, 0.18), 0 8px 20px rgba(139, 90, 90, 0.12), 0 2px 8px rgba(139, 90, 90, 0.08)',
           position: 'relative',
           overflow: 'hidden',
@@ -201,11 +223,11 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => 
         <div style={{
           position: 'absolute',
           top: 0,
-          [isLeft ? 'right' : 'left']: 0,
-          width: '80px',
-          height: '80px',
+          left: 0,
+          width: isMobile ? '60px' : '80px',
+          height: isMobile ? '60px' : '80px',
           background: 'linear-gradient(135deg, rgba(212, 165, 165, 0.15) 0%, transparent 60%)',
-          borderRadius: isLeft ? '0 20px 0 80px' : '20px 0 80px 0',
+          borderRadius: '20px 0 80px 0',
         }} />
 
         {/* Year badge */}
@@ -241,12 +263,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => 
           width: '40px',
           height: '2px',
           background: websiteTheme.gradients.accent,
-          margin: isLeft ? '0 0 0.75rem auto' : '0 auto 0.75rem 0',
+          margin: '0 auto 0.75rem 0',
           borderRadius: '2px',
         }} />
 
         <p style={{
-          fontSize: '0.95rem',
+          fontSize: isMobile ? '0.9rem' : '0.95rem',
           color: websiteTheme.colors.text.secondary,
           lineHeight: 1.7,
           margin: 0,
@@ -259,7 +281,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft }) => 
           display: 'flex',
           gap: '6px',
           marginTop: '1.25rem',
-          justifyContent: isLeft ? 'flex-end' : 'flex-start',
+          justifyContent: 'flex-start',
         }}>
           {[0.6, 0.4, 0.2].map((opacity, i) => (
             <div
