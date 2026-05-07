@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { STORY_CONTENT, HUMAN_STORY_TIMELINE } from '../../config/website';
 import { websiteTheme } from '../../config/styles';
@@ -22,6 +22,7 @@ const useIsMobile = (breakpoint = 768) => {
 const StorySection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -140,10 +141,72 @@ const StorySection: React.FC = () => {
               index={index}
               isLeft={index % 2 === 0}
               isMobile={isMobile}
+              onPhotoClick={setLightboxSrc}
             />
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxSrc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxSrc(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.85)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              cursor: 'zoom-out',
+              padding: '2rem',
+            }}
+          >
+            <motion.img
+              src={lightboxSrc}
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                maxWidth: '90vw',
+                maxHeight: '85vh',
+                objectFit: 'contain',
+                borderRadius: '12px',
+                boxShadow: '0 20px 80px rgba(0,0,0,0.6)',
+                border: '3px solid rgba(196, 147, 147, 0.4)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setLightboxSrc(null)}
+              style={{
+                position: 'fixed',
+                top: '1.5rem',
+                right: '1.5rem',
+                background: 'rgba(255,255,255,0.15)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '44px',
+                height: '44px',
+                fontSize: '1.4rem',
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
@@ -153,9 +216,10 @@ interface TimelineItemProps {
   index: number;
   isLeft: boolean;
   isMobile: boolean;
+  onPhotoClick: (src: string) => void;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft, isMobile }) => {
+const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft, isMobile, onPhotoClick }) => {
   // On mobile, all cards go to the right of the timeline
   const effectiveIsLeft = isMobile ? false : isLeft;
 
@@ -176,7 +240,9 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft, isMob
     >
       {/* Node */}
       <motion.div
-        whileHover={{ scale: 1.2, rotate: 15 }}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => event.photo && onPhotoClick(event.photo)}
         style={{
           position: 'absolute',
           left: isMobile ? '-25px' : '50%',
@@ -185,17 +251,27 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ event, index, isLeft, isMob
           width: isMobile ? '40px' : '56px',
           height: isMobile ? '40px' : '56px',
           borderRadius: '50%',
+          overflow: 'hidden',
+          boxShadow: '0 4px 20px rgba(196, 147, 147, 0.5)',
+          zIndex: 1,
+          border: '3px solid rgba(255, 255, 255, 0.7)',
+          cursor: event.photo ? 'pointer' : 'default',
           background: websiteTheme.gradients.accent,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: isMobile ? '1.1rem' : '1.5rem',
-          boxShadow: '0 4px 20px rgba(196, 147, 147, 0.4), inset 0 2px 4px rgba(255,255,255,0.3)',
-          zIndex: 1,
-          border: '3px solid rgba(255, 255, 255, 0.5)',
         }}
       >
-        {event.icon}
+        {event.photo ? (
+          <img
+            src={event.photo}
+            alt={event.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          event.icon
+        )}
       </motion.div>
 
       {/* Card */}

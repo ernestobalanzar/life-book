@@ -20,6 +20,7 @@ export interface TimelineEvent {
   title: string;
   description: string;
   icon?: string;
+  photo?: string;
 }
 
 export interface Testimonial {

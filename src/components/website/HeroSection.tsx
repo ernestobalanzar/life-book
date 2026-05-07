@@ -96,6 +96,37 @@ const HeroSection: React.FC = () => {
         {HERO_CONTENT.subtitle}
       </motion.p>
 
+      {/* Hero Photo — Full-width banner */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.5, duration: 1.2, ease: 'easeOut' }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: -1,
+          overflow: 'hidden',
+        }}
+      >
+        <img
+          src="/valentina/IMG_2278.webp"
+          alt="Valentina"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            opacity: 0.25,
+          }}
+        />
+        {/* dark vignette so text stays readable */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse at center, transparent 30%, rgba(10,5,20,0.7) 100%)',
+        }} />
+      </motion.div>
+
       {/* Birthday Gallery Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

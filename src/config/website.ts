@@ -62,30 +62,35 @@ export const HUMAN_STORY_TIMELINE: TimelineEvent[] = [
     title: 'Born into the Storm',
     description: 'Born in Europe, straight into the flames of World War II, witnessing the cruel atrocities of broken worlds.',
     icon: '🌍',
+    photo: '/valentina/IMG_2278.webp',
   },
   {
     year: '1945',
     title: 'Fireworks of Hope',
     description: 'At age 6, watched fireworks dedicated to the defeat of fascism and declaration of a new era filled with hope for humanity.',
     icon: '🎆',
+    photo: '/valentina/IMG_2281.webp',
   },
   {
     year: '1950s-2000s',
     title: '50 Years of Light',
     description: 'Gifted 50 years to educating and empowering children, guiding them to love people, animals, nature, and to be kind and happy.',
     icon: '👨‍🏫',
+    photo: '/valentina/IMG_2287.webp',
   },
   {
     year: '2006',
     title: 'A New Chapter',
     description: 'Moved to the United States, continuing to be a beacon of light, infinitely treasured by family, friends, and everyone whose heart she touched.',
     icon: '🗽',
+    photo: '/valentina/IMG_2351.webp',
   },
   {
     year: '2016',
     title: 'The Awakening',
     description: 'Started dreaming of glowing meadows filled with the most amazing happy vibrant flowers, singing under the stars. The artistic journey began.',
     icon: '🌸',
+    photo: '/valentina/IMG_2380.jpeg',
   },
 ];
 
