@@ -345,22 +345,50 @@ const Lightbox: React.FC<LightboxProps> = ({ image, onClose, onPrev, onNext }) =
     </button>
 
     {/* Image */}
-    <motion.img
+    <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0.8, opacity: 0 }}
-      src={image.src}
-      alt={image.alt}
       onClick={(e) => e.stopPropagation()}
       style={{
+        position: 'relative',
         maxWidth: '90%',
         maxHeight: '90vh',
-        objectFit: 'contain',
-        borderRadius: '12px',
-        cursor: 'default',
-        boxShadow: '0 0 60px rgba(212, 165, 165, 0.3)',
+        display: 'inline-block',
       }}
-    />
+    >
+      <motion.img
+        src={image.src}
+        alt={image.alt}
+        style={{
+          display: 'block',
+          width: '100%',
+          height: '100%',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+          objectFit: 'contain',
+          borderRadius: '12px',
+          cursor: 'default',
+          boxShadow: '0 0 60px rgba(212, 165, 165, 0.3)',
+        }}
+      />
+
+      <img
+        src="/valentina/Valentina%20Logo.png"
+        alt="Valentina signature"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          right: '0.9rem',
+          bottom: '0.85rem',
+          width: 'clamp(54px, 8vw, 84px)',
+          height: 'auto',
+          opacity: 0.88,
+          pointerEvents: 'none',
+          filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35))',
+        }}
+      />
+    </motion.div>
   </motion.div>
 );
 

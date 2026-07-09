@@ -200,84 +200,19 @@ const HeroSection: React.FC = () => {
 
 // Blooming flower SVG animation
 const BloomingFlower: React.FC = () => {
-  const petalCount = 12;
-  const petals = Array.from({ length: petalCount }, (_, i) => i);
-
   return (
-    <svg width="200" height="200" viewBox="0 0 200 200">
-      {/* Outer petals */}
-      {petals.map((i) => (
-        <motion.ellipse
-          key={`outer-${i}`}
-          cx="100"
-          cy="50"
-          rx="20"
-          ry="45"
-          fill={`url(#petalGradient${i % 3})`}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.8, scale: 1 }}
-          transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-          style={{
-            transformOrigin: '100px 100px',
-            transform: `rotate(${i * 30}deg)`,
-          }}
-        />
-      ))}
-      
-      {/* Inner petals */}
-      {petals.slice(0, 8).map((i) => (
-        <motion.ellipse
-          key={`inner-${i}`}
-          cx="100"
-          cy="65"
-          rx="12"
-          ry="30"
-          fill={`url(#innerPetalGradient)`}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          transition={{ delay: 1.2 + i * 0.08, duration: 0.4 }}
-          style={{
-            transformOrigin: '100px 100px',
-            transform: `rotate(${i * 45}deg)`,
-          }}
-        />
-      ))}
-
-      {/* Center */}
-      <motion.circle
-        cx="100"
-        cy="100"
-        r="15"
-        fill="url(#centerGradient)"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1.8, duration: 0.5 }}
-      />
-
-      {/* Gradients */}
-      <defs>
-        <radialGradient id="petalGradient0">
-          <stop offset="0%" stopColor="#ffd4e5" />
-          <stop offset="100%" stopColor="#d4a5a5" />
-        </radialGradient>
-        <radialGradient id="petalGradient1">
-          <stop offset="0%" stopColor="#ffe4d4" />
-          <stop offset="100%" stopColor="#e5b8a5" />
-        </radialGradient>
-        <radialGradient id="petalGradient2">
-          <stop offset="0%" stopColor="#f5d0c5" />
-          <stop offset="100%" stopColor="#c49393" />
-        </radialGradient>
-        <radialGradient id="innerPetalGradient">
-          <stop offset="0%" stopColor="#fff5f0" />
-          <stop offset="100%" stopColor="#f5d0c5" />
-        </radialGradient>
-        <radialGradient id="centerGradient">
-          <stop offset="0%" stopColor="#ffeaa7" />
-          <stop offset="100%" stopColor="#f5a623" />
-        </radialGradient>
-      </defs>
-    </svg>
+    <img
+      src="/valentina/Valentina%20Logo.png"
+      alt="Valentina logo"
+      width="200"
+      height="200"
+      style={{
+        width: '200px',
+        height: '200px',
+        objectFit: 'contain',
+        display: 'block',
+      }}
+    />
   );
 };
 
